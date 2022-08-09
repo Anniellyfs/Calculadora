@@ -13,6 +13,10 @@ class calculator{
         this.clear();
     }
 
+    delete(){
+        this.currentOperand = this.currentOperand.toString().slice(0, -1);
+    }
+
     calculate(){
         let result;
         const _previousOperand = parseFloat(this.previousOperand);
@@ -21,16 +25,16 @@ class calculator{
         if (isNaN(_previousOperand) || isNaN(_currentOperand)) return;
 
         switch(this.operation){
-            case '+':
+            case "+":
                 result = _previousOperand + _currentOperand;
                 break;
-            case'-':
+            case"-":
                 result = _previousOperand - _currentOperand;
                 break;
-            case '*':
+            case "*":
                 result = _previousOperand * _currentOperand;
                 break;
-            case '&divide;':
+            case "&divide;":
                 result = _previousOperand / _currentOperand;
                 break;
             default:
@@ -42,6 +46,8 @@ class calculator{
     }
 
     choseOperation(operation){
+        if(this.currentOperand == "") return;
+        
         if(this.previousOperand != ""){
             this.calculate();
         }
@@ -52,13 +58,13 @@ class calculator{
     }
 
     appendNumber(number){
-        if (this.currentOperand.includes('.') && number == '.') return;
+        if (this.currentOperand.includes(".") && number == ".") return;
         this.currentOperand = `${this.currentOperand}${number.toString()}`;
     }
 
     clear(){
-        this.currentOperand = '';
-        this.previousOperand = '';
+        this.currentOperand = "";
+        this.previousOperand = "";
         this.operation = undefined;
     }
 
@@ -74,20 +80,30 @@ const calculator = new calculator(
 );
 
 for(const numberButton of numberButtons){
-    numberButton.addEventListener('click', () => {
+    numberButton.addEventListener("click", () => {
         calculator.appendNumber(numberButton.innerText);
         calculator.updateDisplay();
     })
 }
 
 for( const operationButton of operationButtons){
-    operationButton.addEventListener('click', () => {
+    operationButton.addEventListener("click", () => {
         calculator.choseOperation(operationButton.innerText);
         calculator.updateDisplay();
     });
 }
 
-allclearButton.addEventlistener('click', () =>{
+allclearButton.addEventlistener("click", () =>{
     calculator.clear();
     calculator.updateDisplay();
-})
+});
+
+equalsButton.addEventListener("click", () =>{
+    calculator.calculate();
+    calculator.updateDisplay();
+});
+
+deleteButton.addEventListener("click", () =>{
+    calculator.delete();
+    calculator.updateDisplay();
+});
