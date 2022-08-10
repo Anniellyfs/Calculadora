@@ -15,12 +15,12 @@ class Calculator{
 
     formatDisplayNumber(number){
         const stringNumber = number.toString();
-        const integerDigits = parseFloat(stringNumber.split(".")[0])
-        const decimalDigits = stringNumber.split(".")[1]
+        const integerDigits = parseFloat(stringNumber.split(".")[0]);
+        const decimalDigits = stringNumber.split(".")[1];
 
         let integerDisplay;
         if(isNaN(integerDigits)){
-            integerDisplay = ""
+            integerDisplay = "";
         }else{
             integerDisplay = integerDigits.toLocaleString("en", {
                 maximumFractionDigits: 0,
@@ -54,7 +54,7 @@ class Calculator{
             case "*":
                 result = _previousOperand * _currentOperand;
                 break;
-            case "&divide;":
+            case "÷":
                 result = _previousOperand / _currentOperand;
                 break;
             default:
@@ -66,7 +66,7 @@ class Calculator{
     }
 
     choseOperation(operation){
-        if(this.currentOperand == "") return;
+        if(this.currentOperand === "") return;
         
         if(this.previousOperand != ""){
             this.calculate();
