@@ -1,16 +1,36 @@
-const numberButtons = document.querySelectorAll("[data-number]")
-const operationButtons = document.querySelectorAll("[data-operator]")
-const equalsButton = document.querySelectorAll("[data-equals]")
-const deleteButton = document.querySelectorAll("[data-delete]")
-const allclearButton = document.querySelectorAll("[data-all-clear]")
-const previousOperandTextElement = document.querySelectorAll("[data-previous-operand]")
-const currentOperandTextElement = document.querySelectorAll("[data-current-operand]")
+const numberButtons = document.querySelectorAll("[data-number]");
+const operationButtons = document.querySelectorAll("[data-operator]");
+const equalsButton = document.querySelector("[data-equals]");
+const deleteButton = document.querySelector("[data-delete]");
+const allClearButton = document.querySelector("[data-all-clear]");
+const previousOperandTextElement = document.querySelector("[data-previous-operand]");
+const currentOperandTextElement = document.querySelector("[data-current-operand]");
 
-class calculator{
+class Calculator{
     constructor(previousOperandTextElement, currentOperandTextElement){
         this.previousOperandTextElement = previousOperandTextElement;
         this.currentOperandTextElement = currentOperandTextElement;
         this.clear();
+    }
+
+    formatDisplayNumber(number){
+        const stringNumber = number.toString();
+        const integerDigits = parseFloat(stringNumber.split(".")[0])
+        const decimalDigits = stringNumber.split(".")[1]
+
+        let integerDisplay;
+        if(isNaN(integerDigits)){
+            integerDisplay = ""
+        }else{
+            integerDisplay = integerDigits.toLocaleString("en", {
+                maximumFractionDigits: 0,
+            });
+        }
+        if(decimalDigits != null){
+            return `${integerDisplay}.${decimalDigits}`;
+        }else{
+            return integerDisplay;
+        }
     }
 
     delete(){
@@ -70,11 +90,11 @@ class calculator{
 
     updateDisplay(){
         this.previousOperandTextElement.innerText = `${this.previousOperand} ${this.operation || ""}`;
-        this.currentOperandTextElement.innerText = this.currentOperand; 
+        this.currentOperandTextElement.innerText = this.formatDisplayNumber(this.currentOperand); 
     }
 }
 
-const calculator = new calculator(
+const calculator = new Calculator(
     previousOperandTextElement,
     currentOperandTextElement 
 );
@@ -93,7 +113,7 @@ for( const operationButton of operationButtons){
     });
 }
 
-allclearButton.addEventlistener("click", () =>{
+allClearButton.addEventListener("click", () => {
     calculator.clear();
     calculator.updateDisplay();
 });
